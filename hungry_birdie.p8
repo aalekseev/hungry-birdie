@@ -227,6 +227,7 @@ function obj_rect(obj)
     bottom=obj.pos.y + obj.height}
 end
 
+-- from http://www.sheepolution.com/learn/book/13
 function collision(a_obj, b_obj)
   local a_rect = obj_rect(a_obj)
   local b_rect = obj_rect(b_obj)
