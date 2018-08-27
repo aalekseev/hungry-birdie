@@ -6,12 +6,70 @@
 > The code is written in subset of lua, all assets are drawn by me.
 
 ## Todo
+
 - [ ] Refactor it
 - [ ] Add music
 - [ ] More assets
 - [ ] Add winning stage
 
 ## Development
+
+### Environment
+
+I prefer as text editor `vscode`, so this part is about setting up an editor for comfortable development in pico-8.
+
+I tried a few pico-8 plugins for vscode, but none of them suffice.
+So this is a settings for almost vanilla vscode setup.
+
+#### Editor settings
+
+A very minimal setup with my preferences, I want 2 spaces, not one,
+ruler to brake lines so if anybody reading cartridge code from console
+it wasn't so painful. And associate `p8` extension with `lua` grammar,
+so vscode stop notificate me about extensions in marketplace, and also
+default syntax highlight is pretty ok.
+
+```json
+{
+  "editor.tabSize": 2,
+  "editor.rulers": [34],
+  "files.associations": {"*.p8": "lua"},
+}
+```
+
+#### Tasks
+
+To be able to run cartridge on `Ctrl + Shift + B` without leaving a comfortable editor, the `tasks.json` file mast be created. This is an example snippet.
+
+```json
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Build PICO-8 cartridge",
+      "type": "shell",
+      "command": "pico8 -run ${file}",
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      }
+    }
+  ]
+}
+```
+
+> **! Important**. I made a link to `/usr/local/bin/pico8` so able to run command `pico8` on my system. You can do the same or just point to executable file with pico8 console, like `~/Downloads/pico-8/pico8`.
+
+#### Extensions
+
+I thought about folding code like in fantasy console, but without tasks, but did not found an easy solution, and custom folding extensions did not work well for me.
+
+And I remember about this [bookmarks extension](https://marketplace.visualstudio.com/items?itemName=alefragnani.Bookmarks). And it work very well for me! And working on a 500 line file is not a pain any more. Also bookmarks can be toggled with labels.
+
+![Bookmarks Extension for VSCode](vscode-bookmarks-extension.jpg)
+
+### Code Structure
+
 The code is broken down to a few parts:
 
 1. global constants
@@ -26,6 +84,7 @@ The code is broken down to a few parts:
 ### Utils
 
 #### Random element from list
+
 Returns random item from listing. `flr` will convert `rnd` float (all numbers in lua are floats) value to integer and remebering, that __arrays in lua start with 1__, we need to add + 1 to result.
 
 ```lua
@@ -35,6 +94,7 @@ end
 ```
 
 #### Pixel rounded rectangle
+
 So I needed this function to draw rounded rectangles.
 Basicly it draw rectangle and adds a pixel with background colour
 to every edge of it.
@@ -52,6 +112,7 @@ end
 ```
 
 #### Sprite rectangle
+
 Returns coordinates of rectangle for using in collision detection function. Sprites in lua are 8px on each side, but for items in the game size is smaller and sometimes not even (5x6px), so I use width and height.
 
 ```lua
@@ -65,6 +126,7 @@ end
 ```
 
 #### Collision
+
 This function I get from an [excellent book](http://www.sheepolution.com/learn/book/13) on love2d development by sheepolution. And it works quite well.
 
 ```lua
